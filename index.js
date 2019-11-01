@@ -8,18 +8,20 @@ const app = express()
 
 app.use(bodyParser.urlencoded({ extended: true }))
 
-request('https://apiv2.bitcoinaverage.com/indices/global/ticker/BTCUSD', function (err, res, body) {
-  const data = JSON.parse(body)
-  const price = data.last
-  console.log(price)
-})
 
 app.get("/", function (req, res) {
   res.sendFile(__dirname + "/index.html")
 })
 
 app.post("/", function (req, res) {
-  console.log(req.body.crypto)
+  const fiat = req.body.fiat
+  const crypto = req.body.crypto
+  const basicURL = 'https://apiv2.bitcoinaverage.com/indices/global/ticker/'
+  request('https://apiv2.bitcoinaverage.com/indices/global/ticker/BTCUSD', function (error, response, body) {
+    let data = JSON.parse(body)
+    let price = data.last
+    res.send("<h2>The current price of " + crypto + " is " + price + " " + fiat + "</h2>")
+  })
 })
 
 app.listen(4000, function () {
