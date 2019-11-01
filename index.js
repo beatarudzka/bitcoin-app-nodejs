@@ -16,11 +16,16 @@ app.get("/", function (req, res) {
 app.post("/", function (req, res) {
   const fiat = req.body.fiat
   const crypto = req.body.crypto
-  const basicURL = 'https://apiv2.bitcoinaverage.com/indices/global/ticker/'
-  request('https://apiv2.bitcoinaverage.com/indices/global/ticker/BTCUSD', function (error, response, body) {
+
+  const basicURL = "https://apiv2.bitcoinaverage.com/indices/global/ticker/"
+  const finalURL = basicURL + crypto + fiat
+  request(finalURL, function (error, response, body) {
     let data = JSON.parse(body)
     let price = data.last
-    res.send("<h2>The current price of " + crypto + " is " + price + " " + fiat + "</h2>")
+    const currentDate = data.display_timestamp
+    res.write("<p>The current date is " + currentDate + "</p>")
+    res.write("<h2>The current price of " + crypto + " is " + price + " " + fiat + "</h2>")
+    res.send()
   })
 })
 
