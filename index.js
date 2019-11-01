@@ -9,7 +9,9 @@ const app = express()
 app.use(bodyParser.urlencoded({ extended: true }))
 
 request('https://apiv2.bitcoinaverage.com/indices/global/ticker/BTCUSD', function (err, res, body) {
-  console.log(body)
+  const data = JSON.parse(body)
+  const price = data.last
+  console.log(price)
 })
 
 app.get("/", function (req, res) {
